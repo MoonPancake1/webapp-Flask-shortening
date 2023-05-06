@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="container mt-5">
+    <h1 class="text-center mb-4">Укорачиватель ссылок</h1>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Исходная ссылка</th>
+          <th scope="col">Короткая ссылка</th>
+          <th scope="col">Дата создания</th>
+          <th scope="col">Количество переходов</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for url in urls %}
+          <tr>
+            <th scope="row">{{ loop.index }}</th>
+            <td>
+              <a href="{{ url.original_url }}">
+                {{ url.original_url|truncate(30)}}
+              </a>
+            </td>
+            <td>
+              <a href="{{ url_for('url_redirect', short=url.short, _external=True) }}">
+                {{ url_for('url_redirect', short=url.short, _external=True) }}
+              </a>
+            </td>
+            <td>
+              {{ url.created_at.strftime('%d.%m.%Y %H:%M:%S') }}
+            </td>
+            <td>{{ url.visits }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
